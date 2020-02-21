@@ -1,0 +1,41 @@
+.block__wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.block__left {
+  width: 56%;
+}
+
+.block-right {
+  width: 41%;
+}
+
+.block__header {
+  margin: 0 0 16px;
+}
+
+.block__description {
+  margin: 0 0 24px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.0025em;
+  color: #8391B2;
+}
+
+.block__button {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  background: #2F93FE;
+  border-radius: 6px;
+  letter-spacing: 0.0275em;
+  color: #FFFFFF;
+  padding: 3px 12px;
+}
