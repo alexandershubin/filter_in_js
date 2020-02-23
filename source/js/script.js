@@ -2,9 +2,6 @@ window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
   const onLink = 'https://api.jsonbin.io/b/5df3c10a2c714135cda0bf0f/1';
-  const formItemOne = document.querySelector('form');
-  const formItemTwo = document.querySelector('.form__item--two');
-  const formItemThree = document.querySelector('.form__item--three')
 
   // const request = url => new Promise((resolve, reject) => {
   //   const xhr = new XMLHttpRequest();
@@ -20,6 +17,13 @@ window.addEventListener('DOMContentLoaded', function () {
   //   });
   // });
 
+  /**
+   * Загружает данные с бекенда и рендерит полученные данные
+   *
+   * @param {string} url
+   * @param {function} onSuccess
+   * @param {function} onError
+   */
   const load = (url, onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
 
@@ -58,10 +62,22 @@ window.addEventListener('DOMContentLoaded', function () {
   };
 
   const onSuccess = (data) => {
-    const createProductListTemplate = (el) =>
-      el
-      .map(item =>
-        `<li class="product__list">
+    createProductListTemplate(data);
+    renderList(data);
+    initFilter(data);
+  };
+
+  load(onLink, onSuccess, onError);
+});
+
+/**
+ * Рендерить список продуктов
+ *
+ * @param {Array} data
+ * @returns {string}
+ */
+const createProductListTemplate = data => data.map(item =>
+    `<li class="product__list">
         <div class="product__first">
           <h3>${item.name}</h3>
           <div>
@@ -82,40 +98,50 @@ window.addEventListener('DOMContentLoaded', function () {
           <button class="product__button button">Заказать</button>
         </div>
       </li>`
-      ).join(``);
-    console.log(data.map(it => it.disk))
+  ).join(``);
 
-    const renderItem = (data2) => {
-      const product = document.querySelector('.product');
-      product.innerHTML = createProductListTemplate(data2);
-    };
-    renderItem(data);
+/**
+ * Вставляет список в верстку
+ *
+ * @param data
+ */
+const renderList = (data) => {
+  const product = document.querySelector('.product');
+  product.innerHTML = data.length
+    ? createProductListTemplate(data)
+    : `Нет результатов`;
+};
 
-    const addOnClick = () => {
-      formItemOne.addEventListener('click', (e) => {
-        const {target} = e;
-        const {filtered} = target.dataset;
-        let filterData = Array;
-        switch (filtered) {
-          case 'gpu':
-            filterData = data.filter((item) => item.gpu);
-            break;
-          case 'disk':
-            filterData = data.filter((item) => item.disk.count > 1);
-            break
-        }
-        console.log(filterData);
-        renderItem(filterData);
-      });
-    };
-    addOnClick()
-  };
+/**
+ * инициализирует список продуктов
+ * @param data
+ */
+const initFilter = (data) => {
+  const form = document.querySelector('form');
+  const checkboxes = Array.from(form.querySelectorAll('input[type="checkbox"]'));
+  const coresRange = form.querySelector('input[type="range"]');
+  const hasGPU = item => item.gpu;
+  const hasSSD = item => item.disk.type === 'SSD';
+  const hasRAID = item => item.disk.count > 2;
+  const hasEnoughCores = (coresCount, item) => item.cpu.cores * item.cpu.count >= coresCount;
 
-  load(onLink, onSuccess, onError);
-});
+  form.addEventListener('change', () => {
+    coresCount = coresRange.value;
+    const filters = checkboxes
+      .filter(input => input.checked)
+      .map(input => input.getAttribute('data-filter'));
 
-const arr = [5, 9, 4, 45, 14, 16, 35, 69];
-const sortFunc = (a, b) => a - b;
+    renderList(data.filter((item) => {
+      const needSSD = filters.includes('ssd');
+      const needGPU = filters.includes('gpu');
+      const needRAID = filters.includes('raid');
 
-arr.sort(sortFunc);
-console.log(arr);
+      return !(needGPU && !hasGPU(item)
+        || needSSD && !hasSSD(item)
+        || needRAID && !hasRAID(item)
+        || !hasEnoughCores(coresCount, item));
+    }));
+  });
+};
+
+
