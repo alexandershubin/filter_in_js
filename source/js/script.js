@@ -79,8 +79,8 @@ const createProductListTemplate = data => data.map(item =>
       <div>
         <span>${item.cpu.count}</span> x ${item.cpu.name}
         <span>${item.cpu.count * item.cpu.cores < 5
-          ? item.cpu.count * item.cpu.cores + ' ядра'
-          : item.cpu.count * item.cpu.cores + ' ядер'}</span>
+          ? ' ' + item.cpu.count * item.cpu.cores + ' ядра'
+          : ' ' + item.cpu.count * item.cpu.cores + ' ядер'}</span>
       </div>
     </div>
     <div class="product__second">
