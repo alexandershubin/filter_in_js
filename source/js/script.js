@@ -2,21 +2,6 @@ window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
   const onLink = 'https://api.jsonbin.io/b/5df3c10a2c714135cda0bf0f/1';
-
-  // const request = url => new Promise((resolve, reject) => {
-  //   const xhr = new XMLHttpRequest();
-  //
-  //   xhr.responseType = 'json';
-  //
-  //   xhr.addEventListener('load', function () {
-  //     if (xhr.status === 200) {
-  //       resolve(xhr.response);
-  //     } else {
-  //       reject('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
-  //     }
-  //   });
-  // });
-
   /**
    * Загружает данные с бекенда и рендерит полученные данные
    *
@@ -71,34 +56,47 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 /**
+ * Ставит пробел в ценах
+ *
+ * @param num
+ * @return {string}
+ */
+const prettify = (num) => {
+  let n = num.toString();
+  return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + ' ');
+};
+
+/**
  * Рендерить список продуктов
  *
  * @param {Array} data
  * @returns {string}
  */
 const createProductListTemplate = data => data.map(item =>
-    `<li class="product__list">
-        <div class="product__first">
-          <h3>${item.name}</h3>
-          <div>
-            <span>${item.cpu.count}</span> x ${item.cpu.name}
-            <span>${item.cpu.count * item.cpu.cores < 5 ? item.cpu.count * item.cpu.cores + ' ядра' : item.cpu.count * item.cpu.cores + ' ядер'}</span>
-          </div>
-        </div>
-        <div class="product__second">
-          <span>${item.ram}</span>
-          <div class="product__ram">
-            <span>${item.disk.value + ' ГБ'}</span>
-            <span>${item.disk.type}</span>
-          </div>
-          <span>${item.gpu ? item.gpu : ''}</span>
-        </div>
-        <div class="product__right">
-          <h3>${Math.floor(item.price)} ₽/месяц</h3>
-          <button class="product__button button">Заказать</button>
-        </div>
-      </li>`
-  ).join(``);
+  `<li class="product__list">
+    <div class="product__first">
+      <h3>${item.name}</h3>
+      <div>
+        <span>${item.cpu.count}</span> x ${item.cpu.name}
+        <span>${item.cpu.count * item.cpu.cores < 5
+          ? item.cpu.count * item.cpu.cores + ' ядра'
+          : item.cpu.count * item.cpu.cores + ' ядер'}</span>
+      </div>
+    </div>
+    <div class="product__second">
+      <span>${item.ram}</span>
+      <div class="product__ram">
+        <span>${item.disk.value + ' ГБ'}</span>
+        <span>${item.disk.type}</span>
+      </div>
+      <span>${item.gpu ? item.gpu : ''}</span>
+    </div>
+    <div class="product__right">
+      <h3>${prettify(item.price / 100)} ₽/месяц</h3>
+      <button class="product__button button">Заказать</button>
+    </div>
+    </li>`
+).join(``);
 
 /**
  * Вставляет список в верстку
@@ -128,8 +126,8 @@ const initFilter = (data) => {
   form.addEventListener('change', () => {
     coresCount = coresRange.value;
     const filters = checkboxes
-      .filter(input => input.checked)
-      .map(input => input.getAttribute('data-filter'));
+    .filter(input => input.checked)
+    .map(input => input.getAttribute('data-filter'));
 
     renderList(data.filter((item) => {
       const needSSD = filters.includes('ssd');

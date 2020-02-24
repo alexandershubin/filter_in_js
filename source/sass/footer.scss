@@ -2,6 +2,7 @@
   box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1);
   padding: 40px 0 50px;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .footer__wrapper {
@@ -43,4 +44,30 @@
 
 .footer__logo img {
   margin-bottom: 30px;
+}
+
+@media(max-width: $tablet-width) {
+  .footer__social {
+    flex-wrap: wrap;
+    width: 50%;
+  }
+
+  .footer__list {
+    width: 60%;
+  }
+
+  .footer__item {
+    width: 40%;
+  }
+}
+
+@media(max-width: 400px) {
+  .footer__list {
+    flex-direction: column;
+    width: 70%;
+  }
+
+  .footer__item {
+    width: 50%;
+  }
 }

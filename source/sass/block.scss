@@ -39,3 +39,18 @@
   color: #FFFFFF;
   padding: 3px 12px;
 }
+
+@media(max-width: 768px) {
+  .block__wrapper {
+   flex-direction: column;
+  }
+
+  .block__left {
+    width: 100%;
+  }
+
+  .block-right {
+    width: 100%;
+    text-align: center;
+  }
+}

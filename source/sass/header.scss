@@ -25,12 +25,17 @@
 
   color: #8391B2;
 
+  a {
+    text-decoration: none;
+    color: #8391B2;
+  }
+
   svg {
     padding: 0 10px 0 0;
   }
 }
 
-@media(max-width: 768px) {
+@media(max-width: 1200px) {
   .header__list {
     width: inherit;
     justify-content: flex-end;
