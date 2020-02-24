@@ -107,7 +107,7 @@ const renderList = (data) => {
   const product = document.querySelector('.product');
   product.innerHTML = data.length
     ? createProductListTemplate(data)
-    : `Нет результатов`;
+    : `Нет результатов...`;
 };
 
 /**
@@ -121,7 +121,7 @@ const initFilter = (data) => {
   const hasGPU = item => item.gpu;
   const hasSSD = item => item.disk.type === 'SSD';
   const hasRAID = item => item.disk.count > 2;
-  const hasEnoughCores = (coresCount, item) => item.cpu.cores * item.cpu.count >= coresCount;
+  const hasEnoughCores = (coresCount, item) => item.cpu.cores * item.cpu.count == coresCount;
 
   form.addEventListener('change', () => {
     coresCount = coresRange.value;
