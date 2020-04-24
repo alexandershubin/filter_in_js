@@ -1,7 +1,7 @@
-.configuration__wrapper {
-
-  h2 {
-    text-align: center;
+.configuration {
+  &__h2 {
+   margin: 0;
+   text-align: center;
   }
 }
 
@@ -9,15 +9,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 63px;
+  margin-top: 39px;
 }
 
 .form__slider {
   display: flex;
+  margin-top: 22px;
 }
 
 .output {
-  margin-left: 10px;
+  margin-left: 20px;
+  padding: 10px;
 }
 
 .output__count {
@@ -46,7 +48,7 @@ label {
 
 .form__item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .form__slider {

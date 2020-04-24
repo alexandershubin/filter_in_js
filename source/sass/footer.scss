@@ -37,10 +37,19 @@
 
   color: #8391B2;
 
-  a {
-    text-decoration: none;
-  }
 }
+
+ .footer__a {
+   font-family: 'Museo Sans Cyrl'sans-serif;
+   font-style: normal;
+   font-weight: normal;
+   font-size: 12px;
+   line-height: 24px;
+   text-decoration: none;
+   letter-spacing: 0.0275em;
+   color: #8391B2;
+
+ }
 
 .footer__logo img {
   margin-bottom: 30px;
